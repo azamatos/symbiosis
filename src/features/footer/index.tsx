@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 // components
 import { Button } from "@/shared/ui/button";
@@ -14,7 +14,8 @@ export const TodoListFooter = () => {
     setTitle(event.target.value);
   };
 
-  const handleCreate = async () => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (title) {
       handleCreateTodo(title);
       setTitle("");
@@ -23,16 +24,16 @@ export const TodoListFooter = () => {
 
   return (
     <div className="footer">
-      <input
-        maxLength={50}
-        id="todo-new"
-        value={title}
-        onChange={handleSetTitle}
-        type="text"
-        placeholder="New Todo"
-        className="todo-input"
-      />
-      <Button onClick={handleCreate}>Add Todo</Button>
+      <form onSubmit={handleSubmit}>
+        <input
+          maxLength={50}
+          value={title}
+          onChange={handleSetTitle}
+          type="text"
+          placeholder="New Todo"
+        />
+        <Button type="submit">Add Todo</Button>
+      </form>
       <small>You can change the position of the container by dragging it</small>
     </div>
   );

@@ -1,15 +1,10 @@
 import { useEffect, useState } from "react";
-import { useLiveQuery } from "dexie-react-hooks";
 
 // components
-import { TodoListFooter } from "@/features/footer";
-import { TodoItem } from "@/entities/todo/ui";
+import { TodoListActions } from "@/features/todo-actions";
+import { TodoList } from "@/features/todo-list";
 
-// utils
-import { db } from "@/shared/lib/db";
-
-export const TodoList = () => {
-  const todoList = useLiveQuery(() => db.todoList.toArray());
+export const TodoContainer = () => {
   const [coordinates, setCoordinates] = useState({
     x: 600,
     y: 100,
@@ -19,13 +14,14 @@ export const TodoList = () => {
     window.addEventListener("mouseup", handleStopDragging);
     () => {
       window.removeEventListener("mouseup", handleStopDragging);
+      window.removeEventListener("mousemove", handleSetCoordinates);
     };
-  }, [handleStopDragging, setCoordinates]);
+  }, [handleStopDragging, setCoordinates, handleSetCoordinates]);
 
   // handlers
-  const handleSetCoordinates = (event: MouseEvent) => {
+  function handleSetCoordinates(event: MouseEvent) {
     setCoordinates({ x: event.clientX - 16, y: event.clientY - 22 });
-  };
+  }
 
   const handleStartDragging = () => {
     window.addEventListener("mousemove", handleSetCoordinates);
@@ -44,13 +40,9 @@ export const TodoList = () => {
       >
         <use xlinkHref="#draggable"></use>
       </svg>
-      <h1>To-do List</h1>
-      <div id="todo-list" className="perfect-scrollbar">
-        {todoList?.map((todo) => (
-          <TodoItem key={todo.id} item={todo} />
-        ))}
-      </div>
-      <TodoListFooter />
+      <h1>Todo List</h1>
+      <TodoList />
+      <TodoListActions />
     </div>
   );
 };

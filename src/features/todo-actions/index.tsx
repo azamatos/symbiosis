@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, memo, useState } from "react";
 
 // components
 import { Button } from "@/shared/ui/button";
@@ -6,7 +6,7 @@ import { Button } from "@/shared/ui/button";
 // actions
 import { handleCreateTodo } from "@/entities/todo/api";
 
-export const TodoListFooter = () => {
+export const TodoListActions = memo(() => {
   const [title, setTitle] = useState("");
 
   // handlers
@@ -37,4 +37,4 @@ export const TodoListFooter = () => {
       <small>You can change the position of the container by dragging it</small>
     </div>
   );
-};
+});
